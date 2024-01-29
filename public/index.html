@@ -8,19 +8,18 @@
 </head>
 
 <body>
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-        <img src="./images/icon.png" />
-        <div class="fs-1 text-dark">ClipChameleon</div>
+    <header class="d-flex flex-wrap justify-content-center pb-4 mb-5 border-bottom">
+        <img src="./images/icon.png" style="width: 64px;" />
+        <div class="fs-1 text-dark ms-5">ClipChameleon</div>
     </header>
     <div class="container">
-        <div class="col border-start ps-3 ms-4">
-            <h3>Clipboard History</h3>
-            <span id="clipboardHistory">
-                <ul class="list-unstyled">
-                    <li>History is empty</li>
-                </ul>
-            </span>
-        </div>
+        <span id="clipboardHistory">
+            <div class="row">
+                <div class="col">
+                    Clipboard history is empty.
+                </div>
+            </div>
+        </span>
     </div>
     <script src="./js/bootstrap.min.js"></script>
     <script src="./js/application.js"></script>

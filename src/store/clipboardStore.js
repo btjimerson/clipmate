@@ -26,12 +26,12 @@ class ClipboardStore{
     }
 
     //Gets all of the clipboard history
-    getHistory() {
+    getHistory = () => {
         return this.history;
     }
 
     //Adds a clipboard item to the history
-    addHistoryItem(historyItem) {
+    addHistoryItem = (historyItem) => {
         const item = {
             id: crypto.randomUUID,
             createdDate: new Date(),
