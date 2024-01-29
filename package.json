@@ -1,0 +1,34 @@
+{
+  "name": "clipchameleon",
+  "version": "1.0.0",
+  "description": "ClipChameleon - The universal clipboard manager",
+  "main": "main.js",
+  "build": {
+    "appId": "dev.snbv2.ClipChameleon",
+    "icon": "icons",
+    "mac": {
+      "category": "dev.snbv2.utilities"
+    },
+    "win": {
+      "target": "portable"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  },
+  "scripts": {
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder -mwl"
+  },
+  "postinstall": "electron-builder install-app-deps",
+  "author": "Brian Jimerson",
+  "license": "MIT",
+  "devDependencies": {
+    "electron-builder": "^24.9.1",
+    "electron": "^28.2.0"
+  },
+  "dependencies": {
+    "electron-clipboard-extended": "^1.1.1",
+    "electron-squirrel-startup": "^1.0.0"
+  }
+}
