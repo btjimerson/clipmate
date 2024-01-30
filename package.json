@@ -24,11 +24,12 @@
   "author": "Brian Jimerson",
   "license": "MIT",
   "devDependencies": {
-    "electron-builder": "^24.9.1",
-    "electron": "^28.2.0"
+    "electron": "^28.2.0",
+    "electron-builder": "^24.9.1"
   },
   "dependencies": {
     "electron-clipboard-extended": "^1.1.1",
+    "electron-preferences": "^2.8.2",
     "electron-squirrel-startup": "^1.0.0"
   }
 }
