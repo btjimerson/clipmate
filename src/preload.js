@@ -58,9 +58,13 @@ function getElapsedTime(createdDate) {
         //Use minutes
         returnTime = Math.round(elapsedTime / 60);
         returnTime == 1 ? timeUnit = " minute" : timeUnit = " minutes";
-    } else if (elapsedTime > 86400) {
-        //Use days
+    } else if (elapsedTime >= 3600 && elapsedTime < 86400) {
+        //Use hours
         returnTime = Math.round(elapsedTime / 3600);
+        returnTime == 1 ? timeUnit = " hour" : timeUnit = " hours"
+    } else {
+        //Use days
+        returnTime = Math.round(elapsedTime / 86400);
         returnTime == 1 ? timeUnit = " day" : timeUnit = " days";
     }
 
