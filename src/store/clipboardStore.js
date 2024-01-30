@@ -15,13 +15,20 @@ class ClipboardStore{
     constructor(opts) {
         const userDataPath = (electron.app || electron.remote.app).getPath("userData");
         this.fileName = path.join(userDataPath, opts.configName + ".json");
-        fs.writeFile(this.fileName, "", (err) => {
-            console.log("In callback with err: [" + err + "]");
+        fs.access(this.fileName, fs.constants.R_OK | fs.constants.W_OK, (err) => {
+            console.log(`${this.fileName} ${err ? 'is not writable, creating file' : 'is writeable'}`);
+            fs.writeFile(this.fileName, "", (err) => {
+                if (err) throw err;
+                console.log(`Created new file ${this.fileName}`);
+            })
         });
         try {
             this.history = JSON.parse(fs.readFileSync(this.fileName)); 
         } catch (e) {
-            console.log("Error parsing json. Probably an empty file.");
+            console.log(`Error parsing history json. ${e}`);
+            this.history = {
+                histories: []
+            }
         }
     }
 
