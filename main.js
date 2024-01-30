@@ -2,6 +2,7 @@
 const { app, Tray, Menu, nativeImage, BrowserWindow } = require("electron/main");
 const path = require("node:path");
 const ClipboardStore = require("./src/store/clipboardStore.js");
+//const preferences = require("./src/util/preferences.js");
 
 //Create a ClipboardStore object
 const clipboardStore = new ClipboardStore({
@@ -17,9 +18,6 @@ const createWindow = () => {
     window = new BrowserWindow({
         width: 1200, 
         height: 600,
-        backgroundColor: "#60f542",
-        //titleBarStyle: "customButtonsOnHover",
-        //titleBarOverlay: true,
         icon: path.join(__dirname, 'icons/icon.png'),
         webPreferences: {
             preload: path.join(__dirname, "src/preload.js")
@@ -31,7 +29,7 @@ const createWindow = () => {
 //Create the window when the app is ready
 app.whenReady().then(() => {
 
-    const icon = nativeImage.createFromPath("./icons/icon_32x32.png");
+    const icon = nativeImage.createFromPath("./icons/chameleon_bw_16x16.png");
     tray = new Tray(icon);
     const contextMenu =  Menu.buildFromTemplate([
         {
