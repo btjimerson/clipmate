@@ -11,13 +11,13 @@ const clipboardStore = new ClipboardStore({
 });
 
 let window;
-let tray;
 
 //Create window function
 const createWindow = () => {
     window = new BrowserWindow({
         width: 1200, 
         height: 600,
+        resizable: false,
         icon: path.join(__dirname, 'icons/icon.png'),
         webPreferences: {
             preload: path.join(__dirname, "src/preload.js")
@@ -28,18 +28,6 @@ const createWindow = () => {
 
 //Create the window when the app is ready
 app.whenReady().then(() => {
-
-    const icon = nativeImage.createFromPath("./icons/chameleon_bw_16x16.png");
-    tray = new Tray(icon);
-    const contextMenu =  Menu.buildFromTemplate([
-        {
-            role: "quit",
-            accelerator: "Command+Q"
-        },
-    ])
-    tray.setContextMenu(contextMenu);
-    tray.setToolTip("ClipChameleon");
-
     createWindow();
 
     //Set up the clipboard event listener
