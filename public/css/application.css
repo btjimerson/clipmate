@@ -1,7 +1,4 @@
 body {
-    padding-top: 3rem;
     -webkit-app-region: drag;
 }
-.icon {
-    width: 64px;
-}
+
