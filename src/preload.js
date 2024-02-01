@@ -4,28 +4,33 @@ const { contextBridge, ipcRenderer } = require("electron");
 //Add event listener for clipboard update
 window.addEventListener("DOMContentLoaded", () => {
     const clipboardHistory = document.getElementById("clipboardHistory");
-    ipcRenderer.on("clipboardUpdate", (_event, value) => {        
+    ipcRenderer.on("clipboard-update", (_event, value) => {        
         clipboardHistory.innerHTML = createHistoryHtml(value);
     })
 });
 
 //Register ipc callbacks
 contextBridge.exposeInMainWorld("electronApi", {
-    onClipboardUpdate: (callback) => ipcRenderer.on("clipboardUpdate", (_event, value) => callback(value))
+    clearHistory: () => ipcRenderer.send("clear-history"),
+    onClipboardUpdate: (callback) => ipcRenderer.on("clipboard-update", (_event, value) => callback(value)),
 });
 
 //Creates the HTML for the history cards
 const createHistoryHtml = (value) => {
     jsonValue = JSON.parse(value);
     let html = `<div class="row row-cols-1 row-cols-md-3 g-4">`;
-    for (var i = 0; i < jsonValue.histories.length; i++) {
-        // Still iterating over history items; create a card for each item
-        let historyItem = jsonValue.histories[i];
-        html += `<div class="col"><div class="card h-100"><div class="card-body">`;
-        html += `<p class="card-text">${encodeHTML(historyItem.clipboard)}</p>`;
-        html += `<button class="btn btn-primary btn-sm" onclick="writeToClipboard('${historyItem.clipboard}')">`;
-        html += `Copy to Clipboard</button></div>`;
-        html += `<div class="card-footer text-body-secondary">${getElapsedTime(historyItem.createdDate)}</div></div></div>`
+    if (jsonValue.histories.length > 0) {
+        for (var i = 0; i < jsonValue.histories.length; i++) {
+            // Still iterating over history items; create a card for each item
+            let historyItem = jsonValue.histories[i];
+            html += `<div class="col"><div class="card h-100"><div class="card-body">`;
+            html += `<p class="card-text">${cleanText(historyItem.clipboard)}</p>`;
+            html += `<button class="btn btn-primary btn-sm" onclick="writeToClipboard('${historyItem.clipboard}')">`;
+            html += `Copy to Clipboard</button></div>`;
+            html += `<div class="card-footer text-body-secondary">${getElapsedTime(historyItem.createdDate)}</div></div></div>`
+        }
+    } else {
+        html += `<div class="col">Clipboard history is empty.</div>`
     }
     html += `</div>`;
     return html;
@@ -54,6 +59,18 @@ const getElapsedTime = (createdDate) => {
         returnTime == 1 ? timeUnit = " day" : timeUnit = " days";
     }
     return returnTime + timeUnit + " ago";
+}
+
+// Cleans up text for display
+const cleanText = (str) => {
+    str = truncateText(str, 100);
+    str = encodeHTML(str);
+    return str;
+}
+
+// Truncates text to a specific length
+const truncateText = (str, length) => {
+    return str.substring(0, length - 1);
 }
 
 // Encodes HTML characters
