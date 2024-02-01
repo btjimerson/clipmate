@@ -17,7 +17,7 @@ class ClipboardStore{
         this.fileName = path.join(userDataPath, opts.configName + ".json");
         fs.access(this.fileName, fs.constants.R_OK | fs.constants.W_OK, (err) => {
             console.log(`${this.fileName} ${err ? 'is not writable, creating file' : 'is writeable'}`);
-            fs.writeFile(this.fileName, "", (err) => {
+            if (err) fs.writeFile(this.fileName, "", (err) => {
                 if (err) throw err;
                 console.log(`Created new file ${this.fileName}`);
             })
@@ -46,6 +46,13 @@ class ClipboardStore{
         };
         this.history.histories.push(item);
         fs.writeFileSync(this.fileName, JSON.stringify(this.history));
+    }
+
+    //Clears recent history
+    clearHistory = () =>{
+        this.history.histories = [];
+        fs.writeFileSync(this.fileName, JSON.stringify(this.history));
+        console.log(`Cleared recent history in file ${this.fileName}`);
     }
 }
 
