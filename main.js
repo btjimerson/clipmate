@@ -9,11 +9,11 @@ const clipboardStore = new ClipboardStore({
     defaults: {}
 });
 
-let window;
+let mainWindow;
 
-//Create window function
-const createWindow = () => {
-    window = new BrowserWindow({
+//Create main window function
+const createMainWindow = () => {
+    mainWindow = new BrowserWindow({
         width: 1200, 
         height: 600,
         resizable: false,
@@ -23,33 +23,33 @@ const createWindow = () => {
         }
     });
 
-    window.loadFile(path.join(__dirname, "public/index.html"));
+    mainWindow.loadFile(path.join(__dirname, "public/index.html"));
 }
 
-//Create the window when the app is ready
+//App is ready, create everything
 app.whenReady().then(() => {
 
     //Create the main window
-    createWindow();
+    createMainWindow();
 
     //Set up the clipboard event listener
     const clipboardListener = require("electron-clipboard-extended");
     clipboardListener.on("text-changed", () => {
         let clipboardItem = clipboardListener.readText();
         clipboardStore.addHistoryItem(clipboardItem);
-        window.webContents.send("clipboard-update", JSON.stringify(clipboardStore.getHistory()));
+        mainWindow.webContents.send("clipboard-update", JSON.stringify(clipboardStore.getHistory()));
     }).startWatching();
 
     //Handle the clear history event from the renderer
     ipcMain.on("clear-history", (_event) => {
         clipboardStore.clearHistory();
         clipboardListener.writeText("");
-        window.webContents.send("clipboard-update", JSON.stringify(clipboardStore.getHistory()));
+        mainWindow.webContents.send("clipboard-update", JSON.stringify(clipboardStore.getHistory()));
     });
 
     //Make sure there is an open window (applies to Mac)
     app.on("activate", () => {
-        if (BrowserWindow.getAllWindows().length === 0) {createWindow()};   
+        if (BrowserWindow.getAllWindows().length === 0) {createMainWindow()};   
     });
 });
 
