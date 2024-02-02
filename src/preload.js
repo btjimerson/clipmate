@@ -1,18 +1,24 @@
 //Imports
 const { contextBridge, ipcRenderer } = require("electron");
 
-//Add event listener for clipboard update
-window.addEventListener("DOMContentLoaded", () => {
-    const clipboardHistory = document.getElementById("clipboardHistory");
-    ipcRenderer.on("clipboard-update", (_event, value) => {        
-        clipboardHistory.innerHTML = createHistoryHtml(value);
-    })
+// Get preferences
+let preferences = ipcRenderer.sendSync("getPreferences");
+
+// Handle the preferences save event
+ipcRenderer.on("preferencesUpdated", (_event, newPreferences) => {
+    preferences = newPreferences;
+    const clipboardHistoryElement = document.getElementById("clipboardHistory");
+    ipcRenderer.invoke("getHistory").then((history) => {
+        clipboardHistoryElement.innerHTML = createHistoryHtml(history);
+    });    
 });
 
-//Register ipc callbacks
-contextBridge.exposeInMainWorld("electronApi", {
-    clearHistory: () => ipcRenderer.send("clear-history"),
-    onClipboardUpdate: (callback) => ipcRenderer.on("clipboard-update", (_event, value) => callback(value)),
+//Register ipc functions
+contextBridge.exposeInMainWorld("api", {
+    showPreferences: () => ipcRenderer.send("showPreferences"),
+    clearHistory: () => ipcRenderer.send("clearHistory"),
+    getHistory: () => ipcRenderer.invoke("getHistory").then((history) => {return createHistoryHtml(history)}),
+    onClipboardUpdated: (callback) => ipcRenderer.on("clipboardUpdated", (_event, value) => callback(createHistoryHtml(value))),
 });
 
 //Creates the HTML for the history cards
@@ -25,7 +31,7 @@ const createHistoryHtml = (value) => {
             let historyItem = jsonValue.histories[i];
             html += `<div class="col"><div class="card h-100"><div class="card-body">`;
             html += `<p class="card-text">${cleanText(historyItem.clipboard)}</p>`;
-            html += `<button class="btn btn-primary btn-sm" onclick="writeToClipboard('${historyItem.clipboard}')">`;
+            html += `<button class="btn btn-primary btn-sm" onclick="writeToClipboard('${encodeHTML(historyItem.clipboard)}')">`;
             html += `Copy to Clipboard</button></div>`;
             html += `<div class="card-footer text-body-secondary">${getElapsedTime(historyItem.createdDate)}</div></div></div>`
         }
@@ -63,14 +69,14 @@ const getElapsedTime = (createdDate) => {
 
 // Cleans up text for display
 const cleanText = (str) => {
-    str = truncateText(str, 100);
+    str = truncateText(str, preferences.general.textDisplayLength);
     str = encodeHTML(str);
     return str;
 }
 
 // Truncates text to a specific length
 const truncateText = (str, length) => {
-    return str.substring(0, length - 1);
+    return str.substring(0, length);
 }
 
 // Encodes HTML characters
