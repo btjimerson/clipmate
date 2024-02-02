@@ -14,7 +14,7 @@
   },
   "scripts": {
     "pack": "electron-builder --dir",
-    "dist": "electron-builder -mwl"
+    "dist": "electron-builder -m"
   },
   "postinstall": "electron-builder install-app-deps",
   "author": "Brian Jimerson",
