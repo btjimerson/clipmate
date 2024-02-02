@@ -7,15 +7,9 @@
   "build": {
     "appId": "dev.snbv2.ClipChameleon",
     "productName": "ClipChameleon",
-    "icon": "icons",
     "mac": {
-      "category": "dev.snbv2.utilities"
-    },
-    "win": {
-      "target": "portable"
-    },
-    "linux": {
-      "target": "AppImage"
+      "category": "dev.snbv2.utilities",
+      "icon": "icons/icon_1024x1024@2x.png"
     }
   },
   "scripts": {
