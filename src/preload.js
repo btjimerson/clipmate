@@ -25,15 +25,15 @@ contextBridge.exposeInMainWorld("api", {
 const createHistoryHtml = (value) => {
     jsonValue = JSON.parse(value);
     let html = `<div class="row row-cols-1 row-cols-md-3 g-4">`;
-    if (jsonValue.histories.length > 0) {
-        for (var i = 0; i < jsonValue.histories.length; i++) {
-            // Still iterating over history items; create a card for each item
-            let historyItem = jsonValue.histories[i];
+    if (jsonValue.clipboardItems.length > 0) {
+        for (var i = 0; i < jsonValue.clipboardItems.length; i++) {
+            //Iterate over clipboard items; create a card for each item
+            let clipboardItem = jsonValue.clipboardItems[i];
             html += `<div class="col"><div class="card h-100"><div class="card-body">`;
-            html += `<p class="card-text">${cleanText(historyItem.clipboard)}</p>`;
-            html += `<button class="btn btn-primary btn-sm" onclick="writeToClipboard('${encodeHTML(historyItem.clipboard)}')">`;
+            html += `<p class="card-text">${cleanText(clipboardItem.clipboard)}</p>`;
+            html += `<button class="btn btn-primary btn-sm" onclick="writeToClipboard('${encodeHTML(clipboardItem.clipboard)}')">`;
             html += `Copy to Clipboard</button></div>`;
-            html += `<div class="card-footer text-body-secondary">${getElapsedTime(historyItem.createdDate)}</div></div></div>`
+            html += `<div class="card-footer text-body-secondary">${getElapsedTime(clipboardItem.createdDate)}</div></div></div>`
         }
     } else {
         html += `<div class="col">Clipboard history is empty.</div>`
@@ -69,7 +69,9 @@ const getElapsedTime = (createdDate) => {
 
 // Cleans up text for display
 const cleanText = (str) => {
-    str = truncateText(str, preferences.general.textDisplayLength);
+    if (preferences.general.textDisplayLength > 0) {
+        str = truncateText(str, preferences.general.textDisplayLength);
+    }
     str = encodeHTML(str);
     return str;
 }

@@ -20,11 +20,16 @@ class ClipboardStore {
       }
     */
     history = {
-        histories: []
+        clipboardItems: []
     }
+
+    historyLength;
 
     //Constructor
     constructor(opts) {
+        //Set the history length preference
+        this.historyLength = opts.historyLength;
+
         //Get file name to save history to
         const userDataPath = app.getPath("userData");
         this.fileName = path.join(userDataPath, opts.configName + ".json");
@@ -44,7 +49,7 @@ class ClipboardStore {
         } catch (e) {
             console.log(`Error parsing history json. ${e}`);
             this.history = {
-                histories: []
+                clipboardItems: []
             }
         }
     }
@@ -55,19 +60,32 @@ class ClipboardStore {
     }
 
     //Adds a clipboard item to the history
-    addHistoryItem = (historyItem) => {
+    addClipboardItem = (clipboardItem) => {
         const item = {
             id: crypto.randomUUID,
             createdDate: new Date(),
-            clipboard: historyItem
+            clipboard: clipboardItem
         };
-        this.history.histories.unshift(item);
+        this.history.clipboardItems.unshift(item);
+        this.validateAndSaveHistory();
+    }
+
+    //Truncates history items in the clipboardItems array if needed
+    validateAndSaveHistory = () => {
+
+        //Remove old histories if the array is too long
+        if (this.historyLength > 0) {
+            while (this.history.clipboardItems.length > this.historyLength) {
+                this.history.clipboardItems.pop();
+            };
+        }
         fs.writeFileSync(this.fileName, JSON.stringify(this.history));
+
     }
 
     //Clears recent history
     clearHistory = () => {
-        this.history.histories = [];
+        this.history.clipboardItems = [];
         fs.writeFileSync(this.fileName, JSON.stringify(this.history));
         console.log(`Cleared recent history in file ${this.fileName}`);
     }
