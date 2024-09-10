@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "CLipMate - The universal clipboard manager",
   "main": "main.js",
-  "homepage": "https://github.com/btjimerson/clipchameleon",
+  "homepage": "https://github.com/btjimerson/clipmate",
   "build": {
     "appId": "dev.snbv2.ClipMate",
     "productName": "ClipMate",
