@@ -1,12 +1,12 @@
 {
-  "name": "clipchameleon",
+  "name": "clipmate",
   "version": "0.1.0",
-  "description": "ClipChameleon - The universal clipboard manager",
+  "description": "CLipMate - The universal clipboard manager",
   "main": "main.js",
   "homepage": "https://github.com/btjimerson/clipchameleon",
   "build": {
-    "appId": "dev.snbv2.ClipChameleon",
-    "productName": "ClipChameleon",
+    "appId": "dev.snbv2.ClipMate",
+    "productName": "ClipMate",
     "mac": {
       "category": "dev.snbv2.utilities",
       "icon": "icons/icon_1024x1024@2x.png"

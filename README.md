@@ -1,6 +1,6 @@
-# ClipChameleon
+# ClipMate
 
-ClipChameleon is a universal clipboard manager written in ElectronJS. ClipChameleon monitors your clipboard and stores the history of your clipboard text, allowing you to easily go back in history in your clipboard.
+ClipMate is a universal clipboard manager written in ElectronJS. ClipMate monitors your clipboard and stores the history of your clipboard text, allowing you to easily go back in history in your clipboard.
 
 ## Building distributions
 

@@ -9,7 +9,7 @@ const preferences = new ElectronPreferences({
         debounce: 10000,
     },
     browserWindowOverrides: {
-        title: "ClipChameleon Preferences",
+        title: "ClipMate Preferences",
     },
     css: "public/css/bootstrap.min.css",
     dataStore: path.join(app.getPath("userData"), "preferences.json"),
@@ -32,7 +32,7 @@ const preferences = new ElectronPreferences({
                         key: "focusShortcut",
                         type: "accelerator",
                         modifierRequired: true,
-                        help: "Type your key combination to focus ClipChameleon. Requires restart to take effect!"
+                        help: "Type your key combination to focus ClipMate. Requires restart to take effect!"
                     },
                     {
                         label: "History Length",
